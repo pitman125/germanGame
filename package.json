@@ -1,0 +1,25 @@
+{
+  "name": "german-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pitman125/germanGame.git"
+  },
+  "author": "Pitman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pitman125/germanGame/issues"
+  },
+  "homepage": "https://github.com/pitman125/germanGame#readme"
+}
