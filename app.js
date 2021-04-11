@@ -1,20 +1,41 @@
 const express = require('express');
+const { Server } = require('http');
+const dbLayer = require('./dbLayer');
 
 const app = express();
 const port = 3000;
 
-app.get('/start', (req, res) => {
-    res.send('start');
+let con;
+
+app.use(express.json());
+
+app.get('/start', async (req, res) => {
+    const result = await dbLayer.getRandomRow(con);
+    res.send(result.noun);
 });
 
-app.put('/guess', (req, res) => {
-    res.send('Hello World!');
+app.put('/guess', async (req, res) => {
+    console.log(req.body);
+    const result = await dbLayer.checkResult(con, req.body.word, req.body.guess);
+    console.log(result);
+    if (result) {
+        res.send('well done');
+    } else {
+        res.send('wrong');
+    }
 });
 
-app.get('/continue', (req, res) => {
-    res.send('continue');
+app.put('/continue', async (req, res) => {
+    const nounId = await dbLayer.getNounIds(con, req.body.previousAnswers);
+    const getRow = await dbLayer.getNotX(con, nounId);
+    res.send(getRow.noun);
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-});
+async function startServer() {
+    con = await dbLayer.connect();
+    app.listen(port, () => {
+        console.log(`Example app listening at http://localhost:${port}`);
+    });
+}
+
+startServer().catch(console.error);
