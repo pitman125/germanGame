@@ -15,13 +15,16 @@ app.get('/start', async (req, res) => {
 });
 
 app.put('/guess', async (req, res) => {
-    console.log(req.body);
-    const result = await dbLayer.checkResult(con, req.body.word, req.body.guess);
+    const { word, guess } = req.body;
+    console.log(word);
+    console.log(guess);
+    const result = await dbLayer.checkResult(con, word.replace(/\s/g, ''), guess.replace(/\s/g, ''));
     console.log(result);
     if (result) {
         res.send('well done');
     } else {
-        res.send('wrong');
+        const reason = await dbLayer.getGenderReason(con, word);
+        res.send(reason);
     }
 });
 

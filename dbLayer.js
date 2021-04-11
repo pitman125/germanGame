@@ -58,6 +58,16 @@ async function checkResult(con, word, guess) {
     }
 }
 
+async function getGenderReason(con, word) {
+    let result;
+    try {
+        [[result]] = await con.query('SELECT gender_reason.reason FROM gender_reason inner join noun on gender_reason.id=noun.gender_reason_id where noun.noun=?', (word))
+    } catch (error) {
+        throw new Error("Word doesn't exist in the DB");
+    }
+    return result.reason;
+}
+
 async function closeConnection(con) {
     await con.end();
     return true;
@@ -69,7 +79,8 @@ module.exports = {
     getNotX,
     checkResult,
     closeConnection,
-    getNounIds
+    getNounIds,
+    getGenderReason
 };
 
 async function main() {
